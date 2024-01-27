@@ -28,13 +28,15 @@
     <!-- 文件输入 -->
     <input type="file" id="input-excel" />
     
+    
     <!-- 结果展示 -->
     <div id="result">肌肉： 0</div>
     <div class="container">
       <img id="image1" class="image" src="human-body-image.jpg" alt="Image 1">
-      <img id="image2" class="image" src="Gluteus_maximus.png" alt="Image 2">
+      <img id="image2" class="image" src="\Gluteus_maximus.png" alt="Image 2">
       <img id="image4" class="image" src="下斜方肌.png" alt="Image 1">
       <img id="image3" class="image" src="上斜方肌.png" alt="Image 2">
+      <img id="image5" class="image" src="三頭肌.png" alt="Image 2">
     </div>
     <script>
       
@@ -44,6 +46,7 @@
             var image2 = document.getElementById('image2');
             var image3 = document.getElementById('image3');
             var image4 = document.getElementById('image4');
+            var image5 = document.getElementById('image5');
             image4.style.opacity = 0;
             var reader = new FileReader();
             reader.onload = function(e) {
@@ -74,9 +77,16 @@
                         }
                     });
                 });
-                
+                var triceps = 0;
+                json.forEach(row => {
+                    row.forEach(cell => {
+                        if (cell && cell.toString().includes('三頭肌')) {
+                          triceps++;
+                        }
+                    });
+                });
                 // 显示结果
-                document.getElementById('result').innerText = `斜方肌數量： ${Trapezius}臀大肌數量： ${gluteus_maximus}`;
+                document.getElementById('result').innerText = `斜方肌數量： ${Trapezius}臀大肌數量： ${gluteus_maximus}三頭肌數量： ${triceps}`;
                 //臀大肌
                 if(gluteus_maximus === 1){
                   image2.style.opacity = 0.2;
@@ -106,7 +116,21 @@
                   image3.style.opacity = 1;
                 }else{
                   image3.style.opacity = 0;
-                }                   
+                }        
+                if(triceps === 1){
+                  image5.style.opacity = 0.2;
+                }else if(Trapezius === 2){
+                  image5.style.opacity = 0.4;
+                }
+                else if(triceps === 3){
+                  image5.style.opacity = 0.6;
+                }else if(triceps === 4){
+                  image5.style.opacity = 0.8;
+                }else if(triceps === 5){
+                  image5.style.opacity = 1;
+                }else{
+                  image5.style.opacity = 0;
+                }                      
             };
             
             reader.readAsArrayBuffer(e.target.files[0]);
